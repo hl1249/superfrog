@@ -1,6 +1,8 @@
 import axios from 'axios';
 import env from '@/config/env';
-
+import {
+	Notification
+} from 'element-ui'
 /**
  * 自定义Axios实例
  */
@@ -24,6 +26,20 @@ AJAX.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 AJAX.interceptors.response.use(function (response) {
+	console.log(response)
+	
+	if(response.data.code == "0"){
+		 Notification.error({
+		  title: '错误',
+		  message: response.data.msg
+		});
+	}else if (response.data.code == "200"){
+			Notification({
+		  title: '成功',
+		  message:response.data.msg,
+		  type: 'success'
+		});
+	}
     // 对响应数据做点什么
     return response.data;
 }, function (error) {
